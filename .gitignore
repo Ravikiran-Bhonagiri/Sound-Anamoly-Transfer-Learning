@@ -1,4 +1,7 @@
-data/
+*.wav
+*.zip
+data/**/*.wav
+data/**/*.zip
 venv/
 __pycache__/
 *.pyc
