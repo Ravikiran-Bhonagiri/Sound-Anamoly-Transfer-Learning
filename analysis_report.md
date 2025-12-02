@@ -15,6 +15,12 @@ To assess the quality of the dataset, we extracted 1024-dimensional embeddings f
 
 **Conclusion**: The dataset is high-quality and suitable for training a robust classifier.
 
+### t-SNE Visualization
+
+![t-SNE Visualization](artifacts/embeddings_tsne_check.png)
+
+We also performed t-SNE (t-Distributed Stochastic Neighbor Embedding) to further visualize the high-dimensional data. t-SNE is often better at preserving local structure than PCA. The plot confirms the strong separation between classes, with even tighter clustering observed for some states.
+
 ---
 
 ## 2. Model Performance Analysis (Confusion Matrix)

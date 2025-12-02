@@ -110,6 +110,32 @@ def visualize_embeddings(embeddings, labels):
     plt.savefig(output_path)
     print(f"Visualization saved to {output_path}")
 
+    # --- t-SNE Visualization ---
+    from sklearn.manifold import TSNE
+    print("Running t-SNE...")
+    tsne = TSNE(n_components=2, random_state=42, perplexity=30)
+    embeddings_tsne = tsne.fit_transform(embeddings)
+
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(
+        x=embeddings_tsne[:, 0], 
+        y=embeddings_tsne[:, 1], 
+        hue=labels, 
+        palette='viridis',
+        s=100,
+        alpha=0.8
+    )
+    
+    plt.title(f'YAMNet Embeddings t-SNE (Silhouette Score: {sil_score:.2f})')
+    plt.xlabel('t-SNE Dimension 1')
+    plt.ylabel('t-SNE Dimension 2')
+    plt.legend(title='Classes')
+    plt.grid(True, alpha=0.3)
+    
+    tsne_output_path = 'artifacts/embeddings_tsne_check.png'
+    plt.savefig(tsne_output_path)
+    print(f"t-SNE Visualization saved to {tsne_output_path}")
+
 def main():
     # Gather file paths
     file_paths = []
