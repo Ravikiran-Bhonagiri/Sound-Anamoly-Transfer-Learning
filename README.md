@@ -2,8 +2,6 @@
 
 This project implements an end-to-end audio classification system designed for the Raspberry Pi. It uses a fine-tuned YAMNet model to detect machine states from audio input.
 
-**Repository:** [Sound-Anamoly-Transfer-Learning](https://github.com/Ravikiran-Bhonagiri/Sound-Anamoly-Transfer-Learning.git)
-
 ## Project Structure
 
 The repository is organized as follows:
