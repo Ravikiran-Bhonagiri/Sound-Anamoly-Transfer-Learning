@@ -1,0 +1,13 @@
+# Core Dependencies
+numpy<2
+scipy
+sounddevice
+
+# Inference (Required for running the model)
+tflite-runtime
+
+# Training Dependencies
+# (Only needed if you plan to train the model on the Pi)
+tensorflow
+flatbuffers<2
+tensorflow-hub
