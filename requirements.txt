@@ -5,6 +5,7 @@ sounddevice
 
 # Machine Learning (Training & Visualization)
 tensorflow
+flatbuffers<2
 tensorflow-hub
 scikit-learn
 matplotlib
