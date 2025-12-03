@@ -1,0 +1,12 @@
+Batch Inference Log - 2025-12-03 15:44:38.175113
+Filename | True Label | Predicted Label | Confidence | Result
+--------------------------------------------------------------------------------
+on_merged.wav | on_state | soft_state | 1.0000 | FAIL
+off_merged.wav | off_state | soft_state | 0.9998 | FAIL
+solid_merged.wav | solid_state | soft_state | 1.0000 | FAIL
+paper_merged.wav | soft_state | soft_state | 1.0000 | PASS
+
+Summary:
+Total Files: 4
+Correct: 1
+Accuracy: 25.00%

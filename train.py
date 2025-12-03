@@ -4,13 +4,14 @@ import tensorflow as tf
 import tensorflow_hub as hub
 from scipy.io import wavfile
 from scipy import signal
+import matplotlib.pyplot as plt
 
 # Configuration
 DATA_DIR = 'data'
 CLASSES = ['on_state', 'off_state', 'solid_state', 'soft_state']
 TARGET_SR = 16000
 YAMNET_MODEL_HANDLE = 'https://tfhub.dev/google/yamnet/1'
-EPOCHS = 20
+EPOCHS = 100
 BATCH_SIZE = 32
 INPUT_LENGTH = 16000  # 1 second at 16kHz
 
@@ -104,11 +105,47 @@ def main():
     
     # 2. Train Model
     model = create_model()
-    model.fit(X, y, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_split=0.2)
     
-    # 3. Save Keras Model
-    model.save('artifacts/sound_classifier_head.h5')
-    print("Saved Keras model.")
+    # Callback to save the best model based on validation loss
+    checkpoint_path = 'artifacts/sound_classifier_head.h5'
+    checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
+        checkpoint_path,
+        save_best_only=True,
+        monitor='val_loss',
+        mode='min',
+        verbose=1
+    )
+    
+    history = model.fit(
+        X, y, 
+        epochs=EPOCHS, 
+        batch_size=BATCH_SIZE, 
+        validation_split=0.2,
+        callbacks=[checkpoint_cb]
+    )
+    
+    # Plot training history
+    plt.figure(figsize=(12, 4))
+    
+    plt.subplot(1, 2, 1)
+    plt.plot(history.history['loss'], label='Train Loss')
+    plt.plot(history.history['val_loss'], label='Val Loss')
+    plt.title('Loss')
+    plt.legend()
+    
+    plt.subplot(1, 2, 2)
+    plt.plot(history.history['accuracy'], label='Train Accuracy')
+    plt.plot(history.history['val_accuracy'], label='Val Accuracy')
+    plt.title('Accuracy')
+    plt.legend()
+    
+    plt.savefig('artifacts/training_history.png')
+    print("Saved training history plot to artifacts/training_history.png")
+    
+    # 3. Load Best Keras Model
+    # We reload the best model saved by the checkpoint to ensure TFLite conversion uses the optimized weights
+    model = tf.keras.models.load_model(checkpoint_path)
+    print(f"Loaded best model from {checkpoint_path}")
     
     # 4. Convert to TFLite
     # We need to combine YAMNet + Head for the final TFLite?

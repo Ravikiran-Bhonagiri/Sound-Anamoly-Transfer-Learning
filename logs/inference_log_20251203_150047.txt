@@ -1,0 +1,12 @@
+Batch Inference Log - 2025-12-03 15:00:47.879188
+Filename | True Label | Predicted Label | Confidence | Result
+--------------------------------------------------------------------------------
+on_merged.wav | on_state | ERROR: Invalid integer data type 'f'. | - | -
+off_merged.wav | off_state | ERROR: Invalid integer data type 'f'. | - | -
+solid_merged.wav | solid_state | ERROR: Invalid integer data type 'f'. | - | -
+paper_merged.wav | soft_state | ERROR: Invalid integer data type 'f'. | - | -
+
+Summary:
+Total Files: 0
+Correct: 0
+Accuracy: 0.00%
