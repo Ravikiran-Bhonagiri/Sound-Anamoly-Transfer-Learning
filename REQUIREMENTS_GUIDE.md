@@ -2,23 +2,23 @@
 
 This document explains the different environment requirement files used in this project.
 
-## 1. Training Environment (`requirements_training.txt`)
-**Use this file on your PC / Laptop / Cloud Server.**
+## 1. Training Environment (`requirements_training_pi.txt`)
+**Use this file on your Raspberry Pi (or PC) for Training.**
 
-This file contains the full set of heavy libraries needed to:
-*   Train the model (`train.py`)
+This file contains the full set of libraries needed to:
+*   Train the model (`train.py`) - Includes the fix for Raspberry Pi (`flatbuffers<2`).
 *   Visualize data (`visualize_data.py`)
 *   Evaluate performance (`evaluate_model.py`)
 
 **Key Dependencies:**
 *   `tensorflow`: The full deep learning framework.
+*   `flatbuffers<2`: **Crucial for Raspberry Pi** to avoid TFLite conversion errors.
 *   `tensorflow-hub`: For loading the YAMNet model.
 *   `scikit-learn`, `matplotlib`, `seaborn`: For data analysis and plotting.
-*   `flatbuffers<2`: Pinned to ensure compatibility if you ever need to convert models in this environment.
 
 **Installation:**
 ```bash
-pip install -r requirements_training.txt
+pip install -r requirements_training_pi.txt
 ```
 
 ---
