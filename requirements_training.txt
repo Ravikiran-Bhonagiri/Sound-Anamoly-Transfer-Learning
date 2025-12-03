@@ -1,0 +1,12 @@
+# Core Dependencies
+numpy<2
+scipy
+sounddevice
+
+# Machine Learning & Training
+tensorflow
+flatbuffers<2
+tensorflow-hub
+scikit-learn
+matplotlib
+seaborn
