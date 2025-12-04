@@ -1,0 +1,47 @@
+# Stage 1: Builder
+FROM python:3.9-slim as builder
+
+WORKDIR /app
+
+# Install system dependencies for building wheels if necessary
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install dependencies to a specific location
+# We install from the requirements file content directly to avoid copying it if possible, 
+# but for clarity and maintainability, let's just install the packages listed in the plan.
+# However, to be robust, we should probably copy the requirements file or just list them.
+# The plan listed them implicitly by referring to the file. Let's install them explicitly to match the file content.
+RUN pip install --no-cache-dir --target=/install \
+    "numpy<2" \
+    scipy \
+    sounddevice \
+    tensorflow-cpu \
+    "flatbuffers<2" \
+    tensorflow-hub
+
+# Stage 2: Runtime
+FROM python:3.9-slim
+
+# Install runtime system dependencies
+# libportaudio2 for sounddevice
+RUN apt-get update && apt-get install -y \
+    libportaudio2 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy installed python packages from builder
+COPY --from=builder /install /usr/local/lib/python3.9/site-packages
+
+# Copy training scripts
+COPY train.py .
+COPY evaluate_model.py .
+COPY visualize_data.py .
+
+# Create artifacts directory for output
+RUN mkdir artifacts
+
+# Command to run
+CMD ["python", "train.py"]
