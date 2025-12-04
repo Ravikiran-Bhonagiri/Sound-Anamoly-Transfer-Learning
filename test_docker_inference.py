@@ -38,19 +38,22 @@ def process_audio(file_path):
     return wav_data
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python test_docker_inference.py <wav_file>")
+    if len(sys.argv) < 3:
+        print("Usage: python test_docker_inference.py <wav_file> <model_path>")
         sys.exit(1)
         
     file_path = sys.argv[1]
+    model_path = sys.argv[2]
+    
     if not os.path.exists(file_path):
         print(f"File not found: {file_path}")
         sys.exit(1)
         
     print(f"Testing file: {file_path}")
+    print(f"Using model: {model_path}")
     
     # Load Model
-    interpreter = tflite.Interpreter(model_path=MODEL_PATH)
+    interpreter = tflite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
     
     input_details = interpreter.get_input_details()
