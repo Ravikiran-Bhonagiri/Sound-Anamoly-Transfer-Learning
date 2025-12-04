@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import sounddevice as sd
 import tflite_runtime.interpreter as tflite
@@ -6,8 +7,11 @@ import time
 # Configuration
 import queue
 
+import argparse
+import sys
+
 # Configuration
-MODEL_PATH = 'artifacts/sound_classifier.tflite'
+# MODEL_PATH will be set via argument
 CLASSES = ['on_state', 'off_state', 'solid_state', 'soft_state']
 SAMPLE_RATE = 48000
 TARGET_SR = 16000
@@ -44,8 +48,16 @@ def run_inference(interpreter, input_details, output_details, input_data):
     return output_data[0] # Probability vector
 
 def main():
-    print("Loading model...")
-    interpreter = tflite.Interpreter(model_path=MODEL_PATH)
+    parser = argparse.ArgumentParser(description='Sound Anomaly Detection Inference')
+    parser.add_argument('--model', type=str, required=True, help='Path to .tflite model file')
+    args = parser.parse_args()
+
+    if not os.path.exists(args.model):
+        print(f"Error: Model file not found at {args.model}")
+        sys.exit(1)
+
+    print(f"Loading model from {args.model}...")
+    interpreter = tflite.Interpreter(model_path=args.model)
     interpreter.allocate_tensors()
     
     input_details = interpreter.get_input_details()
