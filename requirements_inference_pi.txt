@@ -1,6 +1,6 @@
 # Core Dependencies
 numpy<2
-scipy
+
 sounddevice
 
 # Inference Runtime (Lightweight)
