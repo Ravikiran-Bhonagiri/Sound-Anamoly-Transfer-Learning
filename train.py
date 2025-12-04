@@ -4,7 +4,7 @@ import tensorflow as tf
 import tensorflow_hub as hub
 from scipy.io import wavfile
 from scipy import signal
-import matplotlib.pyplot as plt
+
 
 # Configuration
 DATA_DIR = 'data'
@@ -124,23 +124,14 @@ def main():
         callbacks=[checkpoint_cb]
     )
     
-    # Plot training history
-    plt.figure(figsize=(12, 4))
-    
-    plt.subplot(1, 2, 1)
-    plt.plot(history.history['loss'], label='Train Loss')
-    plt.plot(history.history['val_loss'], label='Val Loss')
-    plt.title('Loss')
-    plt.legend()
-    
-    plt.subplot(1, 2, 2)
-    plt.plot(history.history['accuracy'], label='Train Accuracy')
-    plt.plot(history.history['val_accuracy'], label='Val Accuracy')
-    plt.title('Accuracy')
-    plt.legend()
-    
-    plt.savefig('artifacts/training_history.png')
-    print("Saved training history plot to artifacts/training_history.png")
+    # Create timestamped artifact directory
+    import datetime
+    timestamp = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    artifact_dir = os.path.join('artifacts', timestamp)
+    os.makedirs(artifact_dir, exist_ok=True)
+    print(f"Artifacts will be saved to: {artifact_dir}")
+
+
     
     # 3. Load Best Keras Model
     # We reload the best model saved by the checkpoint to ensure TFLite conversion uses the optimized weights
@@ -188,10 +179,16 @@ def main():
     ]
     tflite_model = converter.convert()
     
-    with open('artifacts/sound_classifier.tflite', 'wb') as f:
+    tflite_model_path = os.path.join(artifact_dir, 'sound_classifier.tflite')
+    with open(tflite_model_path, 'wb') as f:
         f.write(tflite_model)
         
-    print("Saved artifacts/sound_classifier.tflite")
+    print(f"Saved {tflite_model_path}")
+    
+    # Save the Keras head model as well for reference
+    head_model_path = os.path.join(artifact_dir, 'sound_classifier_head.h5')
+    model.save(head_model_path)
+    print(f"Saved {head_model_path}")
 
 if __name__ == "__main__":
     main()
