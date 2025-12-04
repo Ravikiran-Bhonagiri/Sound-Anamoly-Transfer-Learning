@@ -7,3 +7,8 @@ __pycache__/
 *.pyc
 .env
 .DS_Store
+
+# Generated files
+artifacts/
+logs/
+*.log
