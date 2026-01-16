@@ -156,7 +156,7 @@ def main():
             self.yamnet = yamnet_model
             self.head = head_model
             
-        @tf.function(input_signature=[tf.TensorSpec(shape=[None], dtype=tf.float32)])
+        @tf.function(input_signature=[tf.TensorSpec(shape=[16000], dtype=tf.float32)])
         def call(self, waveform):
             # YAMNet expects raw waveform
             scores, embeddings, spectrogram = self.yamnet(waveform)
